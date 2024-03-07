@@ -1,4 +1,6 @@
+.env
 .venv
+.idea
 __pycache__
 data.db
 *.pyc
