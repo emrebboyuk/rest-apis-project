@@ -27,3 +27,4 @@ flask-jwt-extended
 passlib
 black
 flask-migrate
+gunicorn
