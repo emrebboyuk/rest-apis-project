@@ -50,14 +50,15 @@ class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     username = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True)  # load_only meaning
+    """
+    You never want to return the user's password when your API is gonna return information about a user.
+    So make sure that the password is never being sent to the client.
+    Only the user performing authentication should send us the password and that's it. 
+    The password should not be logged. 
+    It should not be saved to any files. 
+    It should not be sent over the network again. 
+    So load_only true, very important with the password field.
+    """
 
-
-"""
-You never want to return the user's password when your API is gonna return information about a user.
-So make sure that the password is never being sent to the client.
-Only the user performing authentication should send us the password and that's it. 
-The password should not be logged. 
-It should not be saved to any files. 
-It should not be sent over the network again. 
-So load_only true, very important with the password field.
-"""
+class UserRegisterSchema(UserSchema):
+    email = fields.Str(required=True)
