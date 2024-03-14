@@ -19,25 +19,30 @@ from blocklist import BLOCKLIST
 
 blp = Blueprint("Users", "users", description="Operations on users")
 
+
 def send_simple_message(to, subject, body):
     domain = os.getenv("MAILGUN_DOMAIN")
     return requests.post(
         f"https://api.mailgun.net/v3/{domain}/messages",
         auth=("api", os.getenv("MAILGUN_API_KEY")),
-        data={"from": "Emre Bboyuk <mailgun@{domain}>",
-              "to": [to],
-              "subject": subject,
-              "text": body})
+        data={
+            "from": f"Emre Bboyuk <mailgun@{domain}>",
+            "to": [to],
+            "subject": subject,
+            "text": body,
+        },
+    )
+
 
 @blp.route("/register")
 class UserRegister(MethodView):
     @blp.arguments(UserRegisterSchema)
     def post(self, user_data):
         if UserModel.query.filter(
-                or_(
-                    UserModel.username == user_data["username"],
-                    UserModel.email == user_data["email"]
-                )
+            or_(
+                UserModel.username == user_data["username"],
+                UserModel.email == user_data["email"],
+            )
         ).first():
             abort(409, message="A user with that username or email already exists.")
 
@@ -51,7 +56,7 @@ class UserRegister(MethodView):
         send_simple_message(
             to=user.email,
             subject="Successfully signed up",
-            body=f"Hi {user.username}! You have successfully signed up to the Stores REST API."
+            body=f"Hi {user.username}! You have successfully signed up to the Stores REST API.",
         )
 
         return {"message": "User created successfully."}, 201
