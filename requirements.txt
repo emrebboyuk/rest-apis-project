@@ -29,3 +29,5 @@ black
 flask-migrate
 gunicorn
 psycopg2-binary
+rq
+redis

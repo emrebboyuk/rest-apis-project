@@ -60,5 +60,6 @@ class UserSchema(Schema):
     So load_only true, very important with the password field.
     """
 
+
 class UserRegisterSchema(UserSchema):
     email = fields.Str(required=True)
